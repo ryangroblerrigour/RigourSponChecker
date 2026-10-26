@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 from datetime import datetime, timezone
 
@@ -50,11 +51,25 @@ mentions_t = Table(
 )
 
 
-def init_db() -> None:
-    meta.create_all(engine)
+_ready = False
+
+
+def init_db() -> bool:
+    """Create tables if needed. Returns False instead of crashing if the DB is not up yet."""
+    global _ready
+    if _ready:
+        return True
+    try:
+        meta.create_all(engine)
+        _ready = True
+    except Exception:
+        logging.getLogger("sponcheck").warning("Database not reachable yet, will retry on first request")
+    return _ready
 
 
 def log_request(project: str, respid: str, codeframe: str, text: str, response: dict) -> None:
+    if not init_db():
+        raise RuntimeError("Database not reachable")
     now = datetime.now(timezone.utc)
     with engine.begin() as conn:
         req_id = conn.execute(requests_t.insert().values(
@@ -81,6 +96,7 @@ def unmatched(project: str | None, limit: int) -> list[dict]:
          .limit(limit))
     if project:
         q = q.where(mentions_t.c.project == project)
+    init_db()
     with engine.connect() as conn:
         return [dict(r._mapping) for r in conn.execute(q)]
 
@@ -89,6 +105,7 @@ def respondent(project: str, respid: str) -> list[dict]:
     q = (select(requests_t.c.created_at, requests_t.c.input_text, requests_t.c.codes_string)
          .where(requests_t.c.project == project, requests_t.c.respid == respid)
          .order_by(requests_t.c.created_at.desc()))
+    init_db()
     with engine.connect() as conn:
         return [
             {**dict(r._mapping), "created_at": r.created_at.isoformat()}
