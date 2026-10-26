@@ -1,0 +1,22 @@
+{
+  "name": "parcel_carriers_uk",
+  "description": "UK parcel carriers. Spontaneous vs prompted awareness consistency check. Aliases are spelling and spacing variants of listed brands only.",
+  "codes": [
+    {"code": 1,  "label": "DPD",              "aliases": ["dpd"]},
+    {"code": 2,  "label": "DPD Local",        "aliases": ["dpd local", "dpdlocal"]},
+    {"code": 3,  "label": "Royal Mail",       "aliases": ["royal mail", "royalmail"]},
+    {"code": 4,  "label": "Evri",             "aliases": ["evri"]},
+    {"code": 5,  "label": "DHL E-commerce",   "aliases": ["dhl ecommerce", "dhl e commerce", "dhl", "dlh"]},
+    {"code": 6,  "label": "DHL Express",      "aliases": ["dhl express"]},
+    {"code": 7,  "label": "UPS",              "aliases": ["ups"]},
+    {"code": 8,  "label": "FedEx-TNT",        "aliases": ["fedex tnt", "fedex", "fed ex", "tnt"]},
+    {"code": 9,  "label": "ParcelForce",      "aliases": ["parcelforce", "parcel force"]},
+    {"code": 10, "label": "InPost",           "aliases": ["inpost", "in post"]},
+    {"code": 11, "label": "Amazon Logistics", "aliases": ["amazon logistics", "amazon"]},
+    {"code": 12, "label": "Relay",            "aliases": ["relay"]},
+    {"code": 13, "label": "Hived",            "aliases": ["hived"]},
+    {"code": 14, "label": "DX",               "aliases": ["dx"]},
+    {"code": 15, "label": "APC",              "aliases": ["apc"]}
+  ],
+  "ambiguous": []
+}
